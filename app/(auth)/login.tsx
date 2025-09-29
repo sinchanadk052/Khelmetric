@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable } from 'react-native';
 import { useAuth } from '../../src/context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'expo-router';
 
 export default function LoginScreen() {
   const { login, signup, skip } = useAuth();
   const { t } = useTranslation();
+  const router = useRouter();
   const [name, setName] = useState('');
 
   return (
@@ -25,6 +27,10 @@ export default function LoginScreen() {
       </Pressable>
       <Pressable className="w-full bg-gray-200 rounded-md p-3" onPress={skip}>
         <Text className="text-center font-medium">{t('skip_login')}</Text>
+      </Pressable>
+
+      <Pressable className="w-full bg-purple-600 rounded-md p-3" onPress={() => router.push('/(auth)/language')}>
+        <Text className="text-white text-center font-medium">{t('select_language')}</Text>
       </Pressable>
     </View>
   );
