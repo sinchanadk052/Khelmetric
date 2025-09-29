@@ -8,6 +8,8 @@ export default function AppLayout() {
     <Tabs screenOptions={{ headerShown: true }}>
       <Tabs.Screen name="index" options={{ title: t('home') }} />
       <Tabs.Screen name="settings" options={{ title: t('settings') }} />
+      {/* Hidden stack for test flows */}
+      <Tabs.Screen name="tests" options={{ href: null, headerShown: false }} />
     </Tabs>
   );
 }
