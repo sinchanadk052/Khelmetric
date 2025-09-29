@@ -1,0 +1,17 @@
+{
+  "hello": "नमस्ते",
+  "welcome": "स्वागत है",
+  "login": "लॉगिन",
+  "signup": "साइन अप",
+  "skip_login": "लॉगिन छोड़ें",
+  "logout": "लॉगआउट",
+  "home": "होम",
+  "settings": "सेटिंग्स",
+  "select_language": "भाषा चुनें",
+  "english": "अंग्रेज़ी",
+  "hindi": "हिंदी",
+  "tamil": "तमिल",
+  "save_test_data": "टेस्ट डेटा सेव करें",
+  "load_test_data": "टेस्ट डेटा लोड करें",
+  "saved_value": "सेव की गई वैल्यू: {{value}}"
+}

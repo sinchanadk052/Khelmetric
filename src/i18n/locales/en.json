@@ -1,0 +1,17 @@
+{
+  "hello": "Hello",
+  "welcome": "Welcome",
+  "login": "Login",
+  "signup": "Sign Up",
+  "skip_login": "Skip login",
+  "logout": "Logout",
+  "home": "Home",
+  "settings": "Settings",
+  "select_language": "Select Language",
+  "english": "English",
+  "hindi": "Hindi",
+  "tamil": "Tamil",
+  "save_test_data": "Save test data",
+  "load_test_data": "Load test data",
+  "saved_value": "Saved value: {{value}}"
+}
