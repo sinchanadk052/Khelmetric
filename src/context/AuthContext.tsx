@@ -1,15 +1,19 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type AuthUser = { id: string; name?: string; guest?: boolean } | null;
+export type AuthUser = { id: string; email?: string; name?: string; guest?: boolean } | null;
 
 const AUTH_STORAGE_KEY = 'auth:user';
+
+// In-memory user store (no API). Reset on app reload.
+type MemoryUser = { id: string; email: string; password: string; name?: string };
+const memoryUsers: MemoryUser[] = [];
 
 type AuthContextType = {
   user: AuthUser;
   loading: boolean;
-  login: (opts?: { name?: string }) => Promise<void>;
-  signup: (opts?: { name?: string }) => Promise<void>;
+  login: (opts: { email: string; password: string }) => Promise<void>;
+  signup: (opts: { email: string; password: string }) => Promise<void>;
   skip: () => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -39,16 +43,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = useCallback(async (opts?: { name?: string }) => {
-    const dummy = { id: 'user-1', name: opts?.name || 'User' };
-    setUser(dummy);
-    await persist(dummy);
+  const login = useCallback(async ({ email, password }: { email: string; password: string }) => {
+    const existing = memoryUsers.find((u) => u.email.trim().toLowerCase() === email.trim().toLowerCase());
+    if (!existing) throw new Error('User not found. Please sign up.');
+    if (existing.password !== password) throw new Error('Invalid password.');
+    const loggedIn = { id: existing.id, email: existing.email };
+    setUser(loggedIn);
+    await persist(loggedIn);
   }, [persist]);
 
-  const signup = useCallback(async (opts?: { name?: string }) => {
-    const dummy = { id: 'user-1', name: opts?.name || 'New User' };
-    setUser(dummy);
-    await persist(dummy);
+  const signup = useCallback(async ({ email, password }: { email: string; password: string }) => {
+    const existing = memoryUsers.find((u) => u.email.trim().toLowerCase() === email.trim().toLowerCase());
+    if (existing) {
+      if (existing.password === password) {
+        // Treat as login if password matches.
+        const loggedIn = { id: existing.id, email: existing.email };
+        setUser(loggedIn);
+        await persist(loggedIn);
+        return;
+      }
+      throw new Error('Email already registered.');
+    }
+    const id = `user-${Date.now()}`;
+    memoryUsers.push({ id, email, password });
+    const created = { id, email };
+    setUser(created);
+    await persist(created);
   }, [persist]);
 
   const skip = useCallback(async () => {

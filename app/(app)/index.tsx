@@ -23,7 +23,7 @@ export default function HomeScreen() {
 
   return (
     <View className="flex-1 gap-4 p-4">
-      <Text className="text-lg">{t('hello')} {user?.guest ? '(Guest)' : user?.name || ''}</Text>
+      <Text className="text-lg">{t('hello')} {user?.guest ? '(Guest)' : user?.name || user?.email || ''}</Text>
 
       <View className="gap-2">
         <TextInput
